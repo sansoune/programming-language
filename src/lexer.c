@@ -52,6 +52,9 @@ Token* lexing(LEXER* lexer) {
                 return add_token(lexer, create_token(RPAREN, current_char(lexer), line));
                 // printf("%s\n", lex);
                 break;
+            case ';':
+                return add_token(lexer, create_token(SEMICOLON, current_char(lexer), line));
+                break;
 
         }   
 

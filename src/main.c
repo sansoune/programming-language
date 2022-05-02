@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../includes/util.h"
 #include "../includes/lexer.h"
+#include "../includes/parser.h"
 
 
 int main(int argc,char** argv)
@@ -13,11 +14,11 @@ int main(int argc,char** argv)
 
     char* source = read_file(argv[1]);
     LEXER* lexer = init_lexer(source);
-    Token* token = (void*)0;
+    Parser* parser = init_parser(lexer);
+    AST* root = parser_parse(parser);
 
-    while((token = lexing(lexer)) != (void*)0 ) {
-        printf("TOKEN(%d %s %d)\n", token->type,token->data,token->line);
-    }
+    printf("%d\n", root->type);
+    printf("%ld\n", root->compound_size);
     
     
 

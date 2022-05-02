@@ -8,13 +8,16 @@ AST* init_ast(int type)
     ast->variable_definition_name = (void*)0;
     ast->variable_definition_value = (void*)0;
 
-    ast->variable_reference_name = (void*)0;
+    ast->variable_name = (void*)0;
 
     ast->function_call_name = (void*)0;
     ast->function_call_arguments = (void*)0;
     ast->function_call_arguments_size = 0;
 
     ast->string_value = (void*)0;
+
+    ast->compound_value = (void*)0;
+    ast->compound_size = 0;
 
     return ast;
 }
