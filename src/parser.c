@@ -32,6 +32,8 @@ AST* parser_parse_statement(Parser* parser) {
         
         
     }
+
+    return init_ast(AST_NOOP);
 }
 
 AST* parser_parse_statements(Parser* parser) {
@@ -40,14 +42,17 @@ AST* parser_parse_statements(Parser* parser) {
     
     AST* ast_statement = parser_parse_statement(parser);
     compound->compound_value[0] = ast_statement;
+    compound->compound_size += 1;
     
     while (parser->current_token->type == SEMICOLON)
     {
         parser_eat(parser, SEMICOLON);
         AST* ast_statement = parser_parse_statement(parser);
-        compound->compound_size += 1;
-        compound->compound_value = realloc(compound->compound_value, compound->compound_size * sizeof(struct AST_STRUCT*));
-        compound->compound_value[compound->compound_size - 1] = ast_statement;
+        if(ast_statement){
+            compound->compound_size += 1;
+            compound->compound_value = realloc(compound->compound_value, compound->compound_size * sizeof(struct AST_STRUCT*));
+            compound->compound_value[compound->compound_size - 1] = ast_statement;
+        }
     }
     
     return compound;
@@ -64,6 +69,8 @@ AST* parser_parse_expression(Parser* parser) {
             return parser_parse_id(parser);
     }
 
+    return init_ast(AST_NOOP);
+
     // printf("%d\n", parser->current_token->type);
 
 }
@@ -78,12 +85,13 @@ AST* parser_parse_term(Parser* parser) {
 
 AST* parser_parse_function_call(Parser* parser) {
     AST* function_call = init_ast(AST_FUNCTION_CALL);
-    parser_eat(parser, LPAREN);
     function_call->function_call_name = parser->prev_token->data;
+    parser_eat(parser, LPAREN);
     function_call->function_call_arguments = calloc(1, sizeof(struct AST_STRUCT*));
     
     AST* ast_expr = parser_parse_expression(parser);
     function_call->function_call_arguments[0] = ast_expr;
+    function_call->function_call_arguments_size += 1;
     
     while (parser->current_token->type == COMMA)
     {

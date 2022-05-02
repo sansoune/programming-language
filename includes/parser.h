@@ -3,6 +3,7 @@
 
 #include "lexer.h"
 #include "AST.h"
+
 typedef struct PARSER_STRUCT {
     LEXER* lexer;
     Token* current_token;

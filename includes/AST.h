@@ -12,6 +12,7 @@ typedef struct AST_STRUCT
         AST_FUNCTION_CALL,
         AST_STRING,
         AST_COMPOUND,
+        AST_NOOP,
     } type;   
 
     char* variable_definition_name;

@@ -3,6 +3,8 @@
 #include "../includes/util.h"
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
+#include "../includes/visitor.h"
+
 
 
 int main(int argc,char** argv)
@@ -16,13 +18,12 @@ int main(int argc,char** argv)
     LEXER* lexer = init_lexer(source);
     Parser* parser = init_parser(lexer);
     AST* root = parser_parse(parser);
-
-    printf("%d\n", root->type);
-    printf("%ld\n", root->compound_size);
+    Visitor* visitor = init_visitor();
+    visitor_visist(visitor, root);
     
     
 
-    // free(tokens);
+    
     free(source);
 
     return 0;
