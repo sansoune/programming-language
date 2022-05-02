@@ -21,6 +21,7 @@ enum TokenType {
     LT,
     GT,
     SLASH,
+    TOKEN_EOF,
 };
 
 

@@ -55,10 +55,18 @@ Token* lexing(LEXER* lexer) {
             case ';':
                 return add_token(lexer, create_token(SEMICOLON, current_char(lexer), line));
                 break;
+            case ',':
+                return add_token(lexer, create_token(COMMA, current_char(lexer), line));
+                break;
 
         }   
 
     }
+    if(lexer->c == '\n') {
+     line++;
+    }
+
+    return create_token(TOKEN_EOF, "\0", line);
 
 }
 

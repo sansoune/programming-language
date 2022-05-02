@@ -5,12 +5,14 @@ Parser* init_parser(LEXER* lexer) {
     Parser* parser = calloc(1, sizeof(struct PARSER_STRUCT));
     parser->lexer = lexer;
     parser->current_token = lexing(lexer);
+    parser->prev_token = parser->current_token;
 
     return parser;
 }
 
 void parser_eat(Parser* parser, int type) {
     if(parser->current_token->type == type) {
+        parser->prev_token = parser->current_token;
         parser->current_token = lexing(parser->lexer);
     } else {
         printf("parser_eat: expected %d got %d\n", type, parser->current_token->type);
@@ -57,8 +59,12 @@ AST* parser_parse_expression(Parser* parser) {
     switch (parser->current_token->type){
         case STRING:
             return parser_parse_string(parser);
-            break;
+            
+        case ID:
+            return parser_parse_id(parser);
     }
+
+    // printf("%d\n", parser->current_token->type);
 
 }
 
@@ -71,7 +77,25 @@ AST* parser_parse_term(Parser* parser) {
 }
 
 AST* parser_parse_function_call(Parser* parser) {
+    AST* function_call = init_ast(AST_FUNCTION_CALL);
+    parser_eat(parser, LPAREN);
+    function_call->function_call_name = parser->prev_token->data;
+    function_call->function_call_arguments = calloc(1, sizeof(struct AST_STRUCT*));
+    
+    AST* ast_expr = parser_parse_expression(parser);
+    function_call->function_call_arguments[0] = ast_expr;
+    
+    while (parser->current_token->type == COMMA)
+    {
+        parser_eat(parser, COMMA);
+        AST* ast_expr = parser_parse_expression(parser);
+        function_call->function_call_arguments_size  += 1;
+        function_call->function_call_arguments = realloc(function_call->function_call_arguments, function_call->function_call_arguments_size * sizeof(struct AST_STRUCT*));
+        function_call->function_call_arguments[function_call->function_call_arguments_size - 1] = ast_expr;
+    }
+    parser_eat(parser, RPAREN);
 
+    return function_call;
 }
 
 AST* parser_parse_variable_definition(Parser* parser) {
