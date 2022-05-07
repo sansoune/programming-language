@@ -7,6 +7,9 @@ AST* builtin_function_print(Visitor* visitor, AST** args, int size) {
             case AST_STRING:
                 printf("%s\n", arg->string_value);
                 break;
+            case AST_INT:
+                printf("%d\n", arg->number);
+                break;
             default:
                 printf("%p\n", arg);
                 break;

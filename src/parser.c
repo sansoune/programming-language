@@ -29,6 +29,9 @@ AST* parser_parse_statement(Parser* parser) {
         case ID:
             return parser_parse_id(parser);
             break;
+        case NUMBER:
+            return parser_parse_number(parser);
+            break;
         
         
     }
@@ -67,6 +70,10 @@ AST* parser_parse_expression(Parser* parser) {
             
         case ID:
             return parser_parse_id(parser);
+
+        case NUMBER:
+            return parser_parse_number(parser);
+        
     }
 
     return init_ast(AST_NOOP);
@@ -146,6 +153,15 @@ AST* parser_parse_id(Parser* parser) {
     }else {
         return parser_parse_variable(parser);
     }
+}
+
+AST* parser_parse_number(Parser* parser) {
+    AST* ast_number = init_ast(AST_INT);
+    int number = atoi(parser->current_token->data);
+    ast_number->number = number;
+
+    parser_eat(parser, NUMBER);
+    return ast_number;
 }
 
 

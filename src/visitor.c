@@ -26,6 +26,9 @@ AST* visitor_visist(Visitor* visit, AST* node) {
         case AST_VARIABLE:
             return visitor_visit_variable(visit, node);
             break;
+        case AST_INT:
+            return visitor_visit_number(visit, node);
+            break;
         case AST_STRING:
             return visitor_visit_string(visit, node);
             break;
@@ -91,4 +94,8 @@ AST* visitor_visit_compound(Visitor* visit, AST* node) {
     }
 
     return init_ast(AST_NOOP);
+}
+
+AST* visitor_visit_number(Visitor* visitor, AST* node) {
+    return node;
 }

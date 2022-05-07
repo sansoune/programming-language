@@ -20,7 +20,7 @@ Token* lexing(LEXER* lexer);
 Token* parse_string(LEXER* lexer);
 Token* collect_id(LEXER* lexer);
 char* current_char(LEXER* lexer);
-uint32_t parse_number(const char* buf);
+Token* collect_number(LEXER* lexer);
 
 
 #endif

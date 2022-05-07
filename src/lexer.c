@@ -30,7 +30,9 @@ Token* lexing(LEXER* lexer) {
         if(lexer->c == ' ' || lexer->c == 10) {
             skip_space(lexer);
         }
-
+        if(isdigit(lexer->c)) {
+            return collect_number(lexer);
+        }
         if(isalnum(lexer->c)) {
             return collect_id(lexer);
             
@@ -70,15 +72,16 @@ Token* lexing(LEXER* lexer) {
 
 }
 
-
-uint32_t parse_number(const char* buf) {
+//function to parse numbers
+Token* collect_number(LEXER* lexer) {
+    char* number = calloc(1, sizeof(char));
     int i = 0;
-    int number = 0;
-    while(buf[i] != '\0') {
-        number = number * 10 + (buf[i] - '0');
+    while(isdigit(lexer->c)) {
+        number[i] = lexer->c;
         i++;
+        move_lexer(lexer);
     }
-    return number;
+    return create_token(NUMBER, number, 0);
 }
 
 

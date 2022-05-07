@@ -23,5 +23,6 @@ AST* parser_parse_variable(Parser* parser);
 AST* parser_parse_variable_definition(Parser* parser);
 AST* parser_parse_string(Parser* parser);
 AST* parser_parse_id(Parser* parser);
+AST* parser_parse_number(Parser* parser);
 
 #endif
