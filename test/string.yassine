@@ -1,0 +1,3 @@
+const name = "yassine";
+print(name);
+print("hello world");

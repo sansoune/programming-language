@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../includes/built_in.h"
+#include "../includes/scope.h"
 
 
 
@@ -34,6 +35,9 @@ AST* visitor_visist(Visitor* visit, AST* node) {
             break;
         case AST_BINOP:
             return visitor_visit_binop(visit, node);
+            break;
+        case AST_FUNCTION_DEFINITION:
+            return visitor_visit_function_definition(visit, node);
             break;
         case AST_FUNCTION_CALL:
             return visitor_visit_function_call(visit, node);
@@ -73,14 +77,24 @@ AST* visitor_visit_variable(Visitor* visit, AST* node){
             return visitor_visist(visit, variable_defenition->variable_definition_value);
         }
     }
-
     printf("Variable %s not found\n", node->variable_name);
     return node;
 }
+
+AST* visitor_visit_function_definition(Visitor* visit,AST* node) {
+    scope_add_function_definition(node->scope, node);
+    return node;
+}
+
 AST* visitor_visit_function_call(Visitor* visit, AST* node) {
 
     if(strcmp(node->function_call_name, "print") == 0) {
         return builtin_function_print(visit, node->function_call_arguments, node->function_call_arguments_size);
+    }
+
+    AST* fdef = scope_get_function_definition(node->scope, node->function_call_name);
+    if(fdef != (void*)0) {
+        return visitor_visist(visit, fdef->function_definition_body);
     }
 
     printf("undefined function call: %s\n", node->function_call_name);

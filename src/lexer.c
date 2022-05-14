@@ -39,20 +39,22 @@ Token* lexing(LEXER* lexer) {
         }
         if(lexer->c == '"') {
             return parse_string(lexer);
-            // printf("%s\n", string);
         }
         switch (lexer->c) {
             case '=' :
                 return add_token(lexer, create_token(EQUAL, current_char(lexer), line));
-                // printf("%s\n", lex);
                 break;
             case '(':
                 return add_token(lexer, create_token(LPAREN, current_char(lexer), line));
-                // printf("%s\n", lex);
                 break;
             case ')':
                 return add_token(lexer, create_token(RPAREN, current_char(lexer), line));
-                // printf("%s\n", lex);
+                break;
+            case '{':
+                return add_token(lexer, create_token(LBRACE, current_char(lexer), line));
+                break;
+            case '}':
+                return add_token(lexer, create_token(RBRACE, current_char(lexer), line));
                 break;
             case ';':
                 return add_token(lexer, create_token(SEMICOLON, current_char(lexer), line));

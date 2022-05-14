@@ -1,0 +1,5 @@
+const age = 11111;
+
+print(age);
+print(1234);
+

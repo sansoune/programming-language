@@ -15,6 +15,7 @@ AST* visitor_visist(Visitor* visit, AST* node);
 AST* visitor_visit_variable_definition(Visitor* visit, AST* node);
 AST* visitor_visit_variable(Visitor* visit,AST* node);
 AST* visitor_visit_function_call(Visitor* visit, AST* node);
+AST* visitor_visit_function_definition(Visitor* visit,AST* node);
 AST* visitor_visit_string(Visitor* visit, AST* node);
 AST* visitor_visit_binop(Visitor* visit, AST* node);
 AST* visitor_visit_compound(Visitor* visit, AST* node);

@@ -8,6 +8,7 @@ typedef struct AST_STRUCT
 {
     enum {
         AST_VARIABLE_DEFINITION,
+        AST_FUNCTION_DEFINITION,
         AST_VARIABLE,
         AST_INT,
         AST_BINOP,
@@ -17,9 +18,14 @@ typedef struct AST_STRUCT
         AST_NOOP,
     } type;   
 
+    struct SCOPE_STRUCT* scope;
+
     char* variable_definition_name;
     struct AST_STRUCT* variable_definition_value;
 
+    struct AST_STRUCT* function_definition_body;
+    char* function_definition_name;
+    
 
     char* variable_name;
 

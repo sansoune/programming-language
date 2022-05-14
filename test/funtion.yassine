@@ -1,0 +1,7 @@
+function dosomthing() {
+    print("something");
+};
+
+
+
+dosomthing();
