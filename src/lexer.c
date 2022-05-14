@@ -16,19 +16,33 @@ void move_lexer(LEXER* lexer) {
     }
 }
 
+char peek(LEXER* lexer, int a) {
+    return lexer->contents[MIN(lexer->i + a, strlen(lexer->contents))];
+}
+
 void skip_space(LEXER* lexer) {
     while(lexer->c == ' ' || lexer->c == 10) {
         move_lexer(lexer);
     }
 }
 
+void skip_comment(LEXER* lexer) {
+    while(lexer->c != '\n') {
+        move_lexer(lexer);
+    }
+    // skip_space(lexer);
+}
+
+
 Token* lexing(LEXER* lexer) {
     int line = 1;
 
     while (lexer->c != '\0' &&  lexer->i < strlen(lexer->contents)) {
-
         if(lexer->c == ' ' || lexer->c == 10) {
             skip_space(lexer);
+        }
+        if(lexer->c == '/' && peek(lexer, 1) == '/') {
+            skip_comment(lexer);
         }
         if(isdigit(lexer->c)) {
             return collect_number(lexer);

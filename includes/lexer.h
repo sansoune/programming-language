@@ -1,6 +1,9 @@
 #ifndef yass_lexer_h
 #define yass_lexer_h
 
+#define MIN(a, b)\
+  a < b ? a : b
+
 #include "token.h"
 #include <string.h>
 #include <stdio.h>

@@ -1,8 +1,5 @@
 #include "../includes/parser.h"
 
-static Scope* get_node_scope(Parser* parser, AST* node) {
-    return node->scope = (void*)0 ? parser->scope : node->scope;
-}
 
 Parser* init_parser(LEXER* lexer) {
     Parser* parser = calloc(1, sizeof(struct PARSER_STRUCT));
