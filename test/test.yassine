@@ -1,1 +1,8 @@
-print("hello world", 23);
+const test = "hello world";
+const tailer = 1234;
+print(test);
+print(123);
+print(tailer);
+
+const add = 2 + 2;
+print("result= ", add);

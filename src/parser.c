@@ -64,6 +64,11 @@ AST* parser_parse_statements(Parser* parser) {
 
 AST* parser_parse_expression(Parser* parser) {
 
+    return parser_parse_term(parser);
+
+}
+
+AST* parser_parse_factor(Parser* parser) {
     switch (parser->current_token->type){
         case STRING:
             return parser_parse_string(parser);
@@ -77,17 +82,19 @@ AST* parser_parse_expression(Parser* parser) {
     }
 
     return init_ast(AST_NOOP);
-
-    // printf("%d\n", parser->current_token->type);
-
-}
-
-AST* parser_parse_factor(Parser* parser) {
-
 }
 
 AST* parser_parse_term(Parser* parser) {
-
+    AST* ast_left = parser_parse_factor(parser);
+    while (parser->current_token->type == PLUS) {
+        parser_eat(parser, parser->current_token->type);
+        AST* ast_binop = init_ast(AST_BINOP);
+        ast_binop->left = ast_left;
+        ast_binop->op = parser->current_token->type;
+        ast_binop->right = parser_parse_expression(parser);
+        return ast_binop;
+    }
+    return ast_left;
 }
 
 AST* parser_parse_function_call(Parser* parser) {

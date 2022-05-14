@@ -32,6 +32,9 @@ AST* visitor_visist(Visitor* visit, AST* node) {
         case AST_STRING:
             return visitor_visit_string(visit, node);
             break;
+        case AST_BINOP:
+            return visitor_visit_binop(visit, node);
+            break;
         case AST_FUNCTION_CALL:
             return visitor_visit_function_call(visit, node);
             break;
@@ -98,4 +101,13 @@ AST* visitor_visit_compound(Visitor* visit, AST* node) {
 
 AST* visitor_visit_number(Visitor* visitor, AST* node) {
     return node;
+}
+
+AST* visitor_visit_binop(Visitor* visit, AST* node) {
+    int a = node->left->number;
+    int b = node->right->number;
+    int c = a + b;
+    AST* result = init_ast(AST_INT);
+    result->number = c;
+    return result;
 }

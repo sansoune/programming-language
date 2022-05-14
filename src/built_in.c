@@ -11,7 +11,7 @@ AST* builtin_function_print(Visitor* visitor, AST** args, int size) {
                 printf("%d\n", arg->number);
                 break;
             default:
-                printf("%p\n", arg);
+                printf("test: %p\n", arg);
                 break;
 
         }

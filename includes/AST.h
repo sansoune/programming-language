@@ -10,6 +10,7 @@ typedef struct AST_STRUCT
         AST_VARIABLE_DEFINITION,
         AST_VARIABLE,
         AST_INT,
+        AST_BINOP,
         AST_FUNCTION_CALL,
         AST_STRING,
         AST_COMPOUND,
@@ -29,6 +30,10 @@ typedef struct AST_STRUCT
     char* string_value;
 
     int number;
+    struct AST_STRUCT* left;
+    struct AST_STRUCT* right;
+    int op;
+    
 
     struct AST_STRUCT** compound_value;
     size_t compound_size;

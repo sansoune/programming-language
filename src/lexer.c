@@ -60,6 +60,9 @@ Token* lexing(LEXER* lexer) {
             case ',':
                 return add_token(lexer, create_token(COMMA, current_char(lexer), line));
                 break;
+            case '+':
+                return add_token(lexer, create_token(PLUS, current_char(lexer), line));
+                break;
 
         }   
 
