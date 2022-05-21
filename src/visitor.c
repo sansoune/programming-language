@@ -118,10 +118,27 @@ AST* visitor_visit_number(Visitor* visitor, AST* node) {
 }
 
 AST* visitor_visit_binop(Visitor* visit, AST* node) {
-    int a = node->left->number;
-    int b = node->right->number;
-    int c = a + b;
+    AST* new_binop = init_ast(AST_BINOP);
+    new_binop->left = visitor_visist(visit, node->left);
+    new_binop->op = node->op;
+    new_binop->right = visitor_visist(visit, node->right);
+    printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
+
+    if(new_binop->op == 9){
+        new_binop->left->number += new_binop->right->number;
+    }
+    if(new_binop->op == 10){
+        new_binop->left->number -= new_binop->right->number;
+    }
+    if(new_binop->op == 12){
+        new_binop->left->number *= new_binop->right->number;
+    }
+    if(new_binop->op == 15){
+        new_binop->left->number /= new_binop->right->number;
+    }
+    
     AST* result = init_ast(AST_INT);
-    result->number = c;
+    result->number = new_binop->left->number;
+
     return result;
 }

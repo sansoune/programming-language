@@ -82,6 +82,15 @@ Token* lexing(LEXER* lexer) {
             case '+':
                 return add_token(lexer, create_token(PLUS, current_char(lexer), line));
                 break;
+            case '-':
+                return add_token(lexer, create_token(MINUS, current_char(lexer), line));
+                break;
+            case '*':
+                return add_token(lexer, create_token(STAR, current_char(lexer), line));
+                break;
+            case '/':
+                return add_token(lexer, create_token(SLASH, current_char(lexer), line));
+                break;
 
         }   
 
