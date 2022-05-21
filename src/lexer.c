@@ -28,6 +28,9 @@ void skip_space(LEXER* lexer) {
 
 void skip_comment(LEXER* lexer) {
     while(lexer->c != '\n') {
+        if(lexer->c == '\0') {
+            break;
+        }
         move_lexer(lexer);
     }
     // skip_space(lexer);
