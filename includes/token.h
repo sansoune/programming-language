@@ -19,6 +19,7 @@ enum TokenType {
     COMMA,
     STAR,
     LT,
+    EOL,
     GT,
     SLASH,
     TOKEN_EOF,

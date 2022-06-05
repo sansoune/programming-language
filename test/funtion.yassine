@@ -1,5 +1,6 @@
-function dosomthing() {
-    print("something");
+function dosomthing(x, y) {
+    print(x);
+    print(y);
 };
 
 

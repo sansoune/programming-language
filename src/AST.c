@@ -14,6 +14,8 @@ AST* init_ast(int type)
 
     ast->function_definition_body = (void*)0;
     ast->function_definition_name = (void*)0;
+    ast->function_definition_arguments = (void*)0;
+    ast->function_definition_arguments_size = 0;
 
     ast->function_call_name = (void*)0;
     ast->function_call_arguments = (void*)0;

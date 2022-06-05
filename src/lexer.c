@@ -91,14 +91,10 @@ Token* lexing(LEXER* lexer) {
             case '/':
                 return add_token(lexer, create_token(SLASH, current_char(lexer), line));
                 break;
+            
 
         }   
-
     }
-    if(lexer->c == '\n') {
-     line++;
-    }
-
     return create_token(TOKEN_EOF, "\0", line);
 
 }

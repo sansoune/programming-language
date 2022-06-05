@@ -16,7 +16,7 @@ void parser_eat(Parser* parser, int type) {
         parser->prev_token = parser->current_token;
         parser->current_token = lexing(parser->lexer);
     } else {
-        printf("parser_eat: expected %d got %d\n", type, parser->current_token->type);
+        printf("parser_eat: expected %d got %d on line %d\n", type, parser->current_token->type, parser->current_token->line);
         exit(1);
     }
 }
@@ -76,6 +76,7 @@ AST* parser_parse_expression(Parser* parser, Scope* scope) {
         ast_binop->op = parser->current_token->type;
         parser_eat(parser, parser->current_token->type);
         ast_binop->right = parser_parse_expression(parser, scope);
+
         return ast_binop;
     }
   
@@ -127,6 +128,22 @@ AST* parser_parse_function_definition(Parser* parser, Scope* scope) {
     parser_eat(parser, ID);
 
     parser_eat(parser, LPAREN);
+
+    function_def->function_definition_arguments = calloc(1, sizeof(struct AST_STRUCT*));
+    AST* ast_argument = parser_parse_variable(parser, scope);
+    function_def->function_definition_arguments_size += 1;
+    function_def->function_definition_arguments[function_def->function_definition_arguments_size - 1] = ast_argument;
+
+    while (parser->current_token->type == COMMA)
+    {
+        parser_eat(parser, COMMA);
+        function_def->function_definition_arguments_size += 1;
+        function_def->function_definition_arguments = realloc(function_def->function_definition_arguments, function_def->function_definition_arguments_size * sizeof(struct AST_STRUCT*));
+        AST* ast_argument = parser_parse_variable(parser, scope);
+        function_def->function_definition_arguments[function_def->function_definition_arguments_size - 1] = ast_argument;
+    }
+    
+    
     parser_eat(parser, RPAREN);
 
     parser_eat(parser, LBRACE);

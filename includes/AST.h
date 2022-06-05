@@ -25,6 +25,8 @@ typedef struct AST_STRUCT
 
     struct AST_STRUCT* function_definition_body;
     char* function_definition_name;
+    struct AST_STRUCT** function_definition_arguments;
+    size_t function_definition_arguments_size;
     
 
     char* variable_name;

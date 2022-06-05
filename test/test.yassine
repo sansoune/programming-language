@@ -1,14 +1,21 @@
-const test = "test";
+const teest = "test";
 const tailer = 1234;
-print(test);
+print(teest);
 print(123);
 print(tailer);
 
 const add = 2 + 1;
 print(add);
 
-function hello() {
-    print("hello world");
-};
+//function hello() {
+  //  print("hello world");
+//};
 
-hello();
+//hello();
+
+//function test() {
+  //  const num = 2*4;
+    //print(num);
+//};
+
+//test();

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../includes/built_in.h"
 #include "../includes/scope.h"
+#include "../includes/math.h"
 
 
 
@@ -122,13 +123,15 @@ AST* visitor_visit_binop(Visitor* visit, AST* node) {
     new_binop->left = visitor_visist(visit, node->left);
     new_binop->op = node->op;
     new_binop->right = visitor_visist(visit, node->right);
-    printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
+    // printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
 
     if(new_binop->op == 9){
-        new_binop->left->number += new_binop->right->number;
+        new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
     }
     if(new_binop->op == 10){
+        // new_binop->right->number *= -1;
         new_binop->left->number -= new_binop->right->number;
+        // new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
     }
     if(new_binop->op == 12){
         new_binop->left->number *= new_binop->right->number;

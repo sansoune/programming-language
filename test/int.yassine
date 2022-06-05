@@ -1,8 +1,9 @@
 const age = 11111;
 
-const test = 10 - 2 - 3;
+const test = 3 - 2 - 10;
 
-const teest = test + 3;
+// const teest = test + 3;
 print(age);
 print(1234);
-print(teest);
+// print(12 + 2);
+print(test);
