@@ -4,8 +4,7 @@
 #include "AST.h"
 
 typedef struct VISITOR_STRUCT {
-    AST** variable_defenitions;
-    size_t variable_defenition_size;
+    
 } Visitor; 
 
 Visitor* init_visitor();

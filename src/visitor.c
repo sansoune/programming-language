@@ -11,8 +11,7 @@
 
 Visitor* init_visitor() {
     Visitor* visitor = calloc(1, sizeof(struct VISITOR_STRUCT));
-    visitor->variable_defenitions = (void*)0;   
-    visitor->variable_defenition_size = 0;
+    
 
     return visitor;
 }
@@ -59,27 +58,18 @@ AST* visitor_visist(Visitor* visit, AST* node) {
 }
 
 AST* visitor_visit_variable_definition(Visitor* visit, AST* node) {
-    if(visit->variable_defenitions == (void*)0) {
-        visit->variable_defenitions = calloc(1, sizeof(struct AST_STRUCT*));
-        visit->variable_defenitions[0] = node;
-        visit->variable_defenition_size += 1;
-    }else {
-        visit->variable_defenition_size += 1;
-        visit->variable_defenitions = realloc(visit->variable_defenitions,visit->variable_defenition_size * sizeof(struct AST_STRUCT*));
-        visit->variable_defenitions[visit->variable_defenition_size - 1] = node;
-    }
+    scope_add_variable_definition(node->scope, node);
 
     return node;
 }
 AST* visitor_visit_variable(Visitor* visit, AST* node){
-    for (int i = 0; i < visit->variable_defenition_size; i++) {
-        AST* variable_defenition = visit->variable_defenitions[i];
-        if(strcmp(variable_defenition->variable_definition_name, node->variable_name) == 0) {
-            return visitor_visist(visit, variable_defenition->variable_definition_value);
-        }
+    AST* variable_defenition = scope_get_variable_definition(node->scope, node->variable_name);
+    if(variable_defenition != (void*)0) {
+        return visitor_visist(visit, variable_defenition->variable_definition_value);
     }
+    
     printf("Variable %s not found\n", node->variable_name);
-    return node;
+    exit(1);
 }
 
 AST* visitor_visit_function_definition(Visitor* visit,AST* node) {
@@ -123,7 +113,7 @@ AST* visitor_visit_binop(Visitor* visit, AST* node) {
     new_binop->left = visitor_visist(visit, node->left);
     new_binop->op = node->op;
     new_binop->right = visitor_visist(visit, node->right);
-    // printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
+    printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
 
     if(new_binop->op == 9){
         new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
