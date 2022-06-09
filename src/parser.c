@@ -69,6 +69,7 @@ AST* parser_parse_expression(Parser* parser, Scope* scope) {
 
       AST* ast_left = parser_parse_term(parser, scope);
 
+    
     while (parser->current_token->type == PLUS || parser->current_token->type == MINUS)
     {
         AST* ast_binop = init_ast(AST_BINOP);
@@ -76,6 +77,7 @@ AST* parser_parse_expression(Parser* parser, Scope* scope) {
         ast_binop->op = parser->current_token->type;
         parser_eat(parser, parser->current_token->type);
         ast_binop->right = parser_parse_expression(parser, scope);
+        // printf("left: %d, op: %d, right: %d\n", ast_binop->left->number, ast_binop->op, ast_binop->right->number);
 
         return ast_binop;
     }
@@ -103,17 +105,18 @@ AST* parser_parse_factor(Parser* parser, Scope* scope) {
 AST* parser_parse_term(Parser* parser, Scope* scope) {
     AST* ast_left = parser_parse_factor(parser, scope);
 
-  while (parser->current_token->type == STAR || parser->current_token->type == SLASH )
-  {
-    AST* ast_binop = init_ast(AST_BINOP);
-    ast_binop->left = ast_left;
-    ast_binop->op = parser->current_token->type;
-    parser_eat(parser, parser->current_token->type);
-    ast_binop->right = parser_parse_factor(parser, scope);
-    return ast_binop;
-  }  
+    while (parser->current_token->type == STAR || parser->current_token->type == SLASH )
+    {
+        AST* ast_binop = init_ast(AST_BINOP);
+        ast_binop->left = ast_left;
+        ast_binop->op = parser->current_token->type;
+        parser_eat(parser, parser->current_token->type);
+        ast_binop->right = parser_parse_factor(parser, scope);
 
-  return ast_left;
+        return ast_binop;
+    }  
+
+    return ast_left;
 }
 
 AST* parser_parse_function_definition(Parser* parser, Scope* scope) {

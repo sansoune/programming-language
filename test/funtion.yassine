@@ -1,9 +1,9 @@
 function dosomthing(x, y) {
     print(x);
-    print(y);
 };
 
 
 //watsup;
 //dosomthing();
-dosomthing();
+const hello = "world";
+dosomthing("hello", hello);

@@ -84,12 +84,36 @@ AST* visitor_visit_function_call(Visitor* visit, AST* node) {
     }
 
     AST* fdef = scope_get_function_definition(node->scope, node->function_call_name);
-    if(fdef != (void*)0) {
-        return visitor_visist(visit, fdef->function_definition_body);
+    if(fdef == (void*)0) {
+        printf("undefined function call: %s\n", node->function_call_name);
+        exit(1);
     }
 
-    printf("undefined function call: %s\n", node->function_call_name);
-    exit(1);
+    for (int i = 0; i < node->function_call_arguments_size; i++)
+    {
+        if(fdef->function_definition_arguments_size > node->function_call_arguments_size) {
+            printf("too few arguments for function call: %s\n", node->function_call_name);
+            exit(1);
+        }
+        if(fdef->function_definition_arguments_size < node->function_call_arguments_size) {
+            printf("too many arguments for function call: %s\n", node->function_call_name);
+            exit(1);
+        }
+
+        AST* arg = (AST*) fdef->function_definition_arguments[i];
+        AST* arg_value = (AST*) node->function_call_arguments[i];
+
+        AST* variable_def = init_ast(AST_VARIABLE_DEFINITION);
+
+        variable_def->variable_definition_name = calloc(strlen(arg->variable_name) + 1, sizeof(char));
+        strcpy(variable_def->variable_definition_name, arg->variable_name);
+        variable_def->variable_definition_value = arg_value;
+
+        scope_add_variable_definition(fdef->function_definition_body->scope, variable_def);
+    }
+
+    return visitor_visist(visit, fdef->function_definition_body);
+
 }
 AST* visitor_visit_string(Visitor* visit, AST* node) {
     return node;
@@ -113,15 +137,15 @@ AST* visitor_visit_binop(Visitor* visit, AST* node) {
     new_binop->left = visitor_visist(visit, node->left);
     new_binop->op = node->op;
     new_binop->right = visitor_visist(visit, node->right);
-    printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
+    // printf("num1:%d op:%d num2:%d\n", new_binop->left->number, new_binop->op, new_binop->right->number);
 
     if(new_binop->op == 9){
         new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
     }
     if(new_binop->op == 10){
-        // new_binop->right->number *= -1;
-        new_binop->left->number -= new_binop->right->number;
-        // new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
+        new_binop->right->number *= -1;
+        // new_binop->left->number -= new_binop->right->number;
+        new_binop->left->number = add(new_binop->left->number, new_binop->right->number);
     }
     if(new_binop->op == 12){
         new_binop->left->number *= new_binop->right->number;
